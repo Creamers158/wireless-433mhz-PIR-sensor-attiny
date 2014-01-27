@@ -60,4 +60,3 @@ to change the pins create an .avrduderc file in your home directory containing (
 		miso  = 9;
 	;
 
-Mercuri0 and Sweetpi ! 
