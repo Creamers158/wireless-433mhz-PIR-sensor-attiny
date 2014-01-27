@@ -1,53 +1,58 @@
-attiny-433mhz-sender
-====================
+Wireless 433mhz PIR sensor for attiny45
+=============
 
-AVR ATtiny85 433mhz remote control for [Intertechno IT-1500 power outlets](http://www.amazon.de/gp/product/B0054IPASK/ref=as_li_qf_sp_asin_tl?ie=UTF8&amp;camp=1638&amp;creative=6742&amp;creativeASIN=B0054IPASK&amp;linkCode=as2&amp;tag=sweetpi-21).
+This is a wireless passive infrared sensor for the raspberry build with an attiny45. I
+It will send a 433 mhz (custom) signal when movement is detected. 
+You can use i.e. pilight (http://www.pilight.org) to perform the nessasarry action when a signal is send.
+WARNING: this could potentionally damage your raspberry pi and also other hardware. i take no responsability for any damages! Try at your own risk!
 
-schematics
-----------
+1. Install avrgcc:
+------------------
+	sudo apt-get install gcc-avr avr-libc
 
-![breadboard](https://raw.github.com/sweetpi/attiny-433mhz-sender/master/docs/sender_steckplatine.png)
-![circuit diagram](https://raw.github.com/sweetpi/attiny-433mhz-sender/master/docs/sender_schaltplan.png)
+2. Install modified avrdude:
+-------------------
+	wget http://project-downloads.drogon.net/files/avrdude_5.10-4_armhf.deb
+	wget http://project-downloads.drogon.net/files/avrdude-doc_5.10-4_all.deb
+	sudo dpkg -i avrdude_5.10-4_armhf.deb
+	sudo dpkg -i avrdude-doc_5.10-4_all.deb
 
-part list
----------
-
-* [433Mhz Transmitter Modul][sender]
-* [AVR ATtiny85][att85]
-* 2x 10kOhm Widerstand
-* 2x [switch][taster]
-* [battery holder][batt] for 3-5V 
-* 1x [LED][led] (Optional)
-* 1x LED series resistor (Optional)
-
- [sender]: http://www.amazon.de/s/?_encoding=UTF8&__mk_de_DE=%C3%83%C2%85M%C3%83%C2%85%C3%85%C2%BD%C3%83%C2%95%C3%83%C2%91&camp=1638&creative=19454&field-keywords=433%20mhz%20transmitter%20module&linkCode=ur2&site-redirect=de&tag=sweetpi-21&url=search-alias%3Daps
- [att85]: http://www.amazon.de/gp/product/B0053TACLU/ref=as_li_ss_tl?ie=UTF8&camp=1638&creative=19454&creativeASIN=B0053TACLU&linkCode=as2&tag=sweetpi-21
- [batt]: http://www.amazon.de/s/?_encoding=UTF8&__mk_de_DE=%C3%83%C2%85M%C3%83%C2%85%C3%85%C2%BD%C3%83%C2%95%C3%83%C2%91&camp=1638&creative=19454&field-keywords=batteriehalter%204xaa&linkCode=ur2&rh=i%3Aaps%2Ck%3Abatteriehalter%204xaa&site-redirect=de&sprefix=batteriehalter%204x%2Caps%2C155&tag=sweetpi-21&url=search-alias%3Daps
- [led]: http://www.amazon.de/s/?_encoding=UTF8&__mk_de_DE=%C3%83%C2%85M%C3%83%C2%85%C3%85%C2%BD%C3%83%C2%95%C3%83%C2%91&camp=1638&creative=19454&field-keywords=Leuchtdioden&linkCode=ur2&site-redirect=de&tag=sweetpi-21&url=search-alias%3Daps
- [taster]: http://www.amazon.de/s/?_encoding=UTF8&__mk_de_DE=%C3%83%C2%85M%C3%83%C2%85%C3%85%C2%BD%C3%83%C2%95%C3%83%C2%91&camp=1638&creative=19454&field-keywords=avr%20programmer&linkCode=ur2&site-redirect=de&tag=tube2mp3-21&url=search-alias%3Daps
+3. Compile and program attiny:
+------------------------------
+	make all
+	make program
+	
 
 
-source and build
----------------
+Additional info:
+----------------
+###Calculate fuses:
+	http://www.engbedded.com/fusecalc/
 
-    sudo apt-get install gcc-avr avr-libc
+###Pinout:
+	
+Down below a schematic how I use my attiny45, PIR Sensor and 433mhz sender.
+	![Schematic](docs\schematic.png "Schematic")
+        ![Pinout attiny 45] (docs\attiny45_85pinout.png  "Pinout attiny 45")
 
-Build with make:
+|  Name     | Raspberry Pi V2 | Attiny45 | 433 Sender  | PIR Sensor |
+|-----------|-----------------|----------|-------------|------------|
+|  MOSI     |       19        |    5     |      -      |     -      |
+|  MISO     |       21        |    6     |      -      |     -      |
+|  SCK      |       23        |    7     |      -      |     -      |
+| RESET     |       24        |    1     |      -      |     -      |
+| TRANS_PIN |       -         |    3     |     DATA    |     -      |
+| INPUT_PIN |       -         |    4     |      -      |    DATA    |
 
-    make
 
-`rc.h` implements the 433mhz protocoll for the [Intertechno IT-1500 power outlets](http://www.amazon.de/gp/product/B0054IPASK/ref=as_li_qf_sp_asin_tl?ie=UTF8&amp;camp=1638&amp;creative=6742&amp;creativeASIN=B0054IPASK&amp;linkCode=as2&amp;tag=sweetpi-21)
+to change the pins create an .avrduderc file in your home directory containing (the numbering is wiringpi numbering!):
 
-
-flash
------
-
-Choose your avr programmer in the `Makefile`:
-
-    AVRDUDE_PROGRAMMER = avrispmkII
-
-Then flash with:
-
-    make program
-
-[Full guide (in German)](http://www.sweetpi.de/blog/553/einen-433mhz-funksender-selber-bauen)
+	programmer
+		id    = "gpio";
+		desc  = "Use sysfs interface to bitbang GPIO lines";
+		type  = gpio;
+		reset = 8;
+		sck   = 11;
+		mosi  = 10;
+		miso  = 9;
+	;
