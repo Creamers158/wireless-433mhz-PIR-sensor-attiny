@@ -1,10 +1,13 @@
 Wireless 433mhz PIR sensor for attiny45
 =============
+This code is based on the work from Sweetpi and with the help from Mercuri0
 
-This is a wireless passive infrared sensor for the raspberry build with an attiny45. I
+https://github.com/sweetpi
+
+This is a wireless passive infrared sensor for the raspberry build with an attiny45.
 It will send a 433 mhz (custom) signal when movement is detected. 
 You can use i.e. pilight (http://www.pilight.org) to perform the nessasarry action when a signal is send.
-WARNING: this could potentionally damage your raspberry pi and also other hardware. i take no responsability for any damages! Try at your own risk!
+WARNING: this could potentionally damage your raspberry pi and also other hardware. I take no responsability for any damages! Try at your own risk!
 
 1. Install avrgcc:
 ------------------
@@ -32,8 +35,8 @@ Additional info:
 ###Pinout:
 	
 Down below a schematic how I use my attiny45, PIR Sensor and 433mhz sender.
-	![Schematic](docs\schematic.png "Schematic")
-        ![Pinout attiny 45] (docs\attiny45_85pinout.png  "Pinout attiny 45")
+	![Schematic](docs/schematic.png "Schematic")
+        ![Pinout attiny 45] (docs/attiny45_85pinout.png  "Pinout attiny 45")
 
 |  Name     | Raspberry Pi V2 | Attiny45 | 433 Sender  | PIR Sensor |
 |-----------|-----------------|----------|-------------|------------|
@@ -56,3 +59,5 @@ to change the pins create an .avrduderc file in your home directory containing (
 		mosi  = 10;
 		miso  = 9;
 	;
+
+Mercuri0 and Sweetpi ! 
