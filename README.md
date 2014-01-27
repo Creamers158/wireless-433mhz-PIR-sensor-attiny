@@ -4,6 +4,10 @@ This code is based on the work from Sweetpi and with the help from Mercuri0
 
 https://github.com/sweetpi
 
+
+!!!!!!!!!!!!!THIS PROJECT IS FOR TESTING PURPOSES!!!!!!!!!!!!!!!!
+
+
 This is a wireless passive infrared sensor for the raspberry build with an attiny45.
 It will send a 433 mhz (custom) signal when movement is detected. 
 You can use i.e. pilight (http://www.pilight.org) to perform the nessasarry action when a signal is send.
